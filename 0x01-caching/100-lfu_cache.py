@@ -52,7 +52,8 @@ class LFUCache(BaseCaching):
 
     def discard_lfu(self):
         """ Discard the least frequently used item.
-            If there is a tie in frequency, discard the least recently used item.
+            If there is a tie in frequency,
+            discard the least recently used item.
         """
         # Find the minimum frequency among current items
         min_freq = min(self.frequency.values())
@@ -67,7 +68,8 @@ class LFUCache(BaseCaching):
         print(f"DISCARD: {lfu_key}")
 
     def update_order(self, key):
-        """ Update the order of access to manage LRU for items with equal frequency """
+        """ Update the order of access to manage
+        LRU for items with equal frequency """
         if key in self.order:
             self.order.remove(key)
         self.order.append(key)
