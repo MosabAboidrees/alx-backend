@@ -41,10 +41,13 @@ class Server:
             page (int): The current page number (1-indexed).
             page_size (int): The number of items per page.
         Returns:
-            List[List]: A list of rows for the requested page or an empty list if out of range.
+            List[List]: A list of rows for the requested page
+            or an empty list if out of range.
         """
-        assert isinstance(page, int) and page > 0, "Page must be a positive integer"
-        assert isinstance(page_size, int) and page_size > 0, "Page size must be a positive integer"
+        assert isinstance(page, int) and page > 0,\
+            "Page must be a positive integer"
+        assert isinstance(page_size, int) and page_size > 0,\
+            "Page size must be a positive integer"
 
         start_index, end_index = index_range(page, page_size)
         data = self.dataset()
@@ -57,7 +60,8 @@ class Server:
             page (int): The current page number (1-indexed).
             page_size (int): The number of items per page.
         Returns:
-            Dict[str, Any]: A dictionary containing pagination data and metadata.
+            Dict[str, Any]: A dictionary containing pagination
+            data and metadata.
         """
         data = self.get_page(page, page_size)
         total_pages = math.ceil(len(self.dataset()) / page_size)
