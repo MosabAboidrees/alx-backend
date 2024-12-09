@@ -26,7 +26,7 @@ def get_locale() -> str:
     locale = request.args.get('locale')
     # Validate if the locale is supported
     if locale in app.config["LANGUAGES"]:
-        print(f"Selected locale from query parameter: {locale}")
+        # print(f"Selected locale from query parameter: {locale}")
         return locale  # Return the valid locale
     # best_match = request.accept_languages.best_match(app.config["LANGUAGES"])
     # print(f"Selected best match locale: {best_match}")
