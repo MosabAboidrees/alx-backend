@@ -5,7 +5,7 @@ from flask_babel import Babel
 from flask import Flask, render_template, request
 
 
-class Config:
+class Config(object):
     """Represents a Flask Babel configuration.
     """
     LANGUAGES = ["en", "fr"]  # Supported languages
@@ -15,7 +15,6 @@ class Config:
 
 app = Flask(__name__)  # Create a Flask application instance
 app.config.from_object(Config)  # Load configuration from Config class
-app.url_map.strict_slashes = False  # Disable strict slashes
 babel = Babel(app)  # Initialize Babel with the Flask app
 
 
@@ -23,9 +22,9 @@ babel = Babel(app)  # Initialize Babel with the Flask app
 def get_locale() -> str:
     """Retrieves the locale for a web page."""
     # Check if the 'locale' parameter exists in the request args
-    locale = request.args.get('locale')
+    locale = request.args.get('locale', '').strip()
     # Validate if the locale is supported
-    if locale in app.config["LANGUAGES"]:
+    if locale and locale in Config.LANGUAGES:
         # print(f"Selected locale from query parameter: {locale}")
         return locale  # Return the valid locale
     # best_match = request.accept_languages.best_match(app.config["LANGUAGES"])
@@ -34,11 +33,11 @@ def get_locale() -> str:
     return request.accept_languages.best_match(app.config["LANGUAGES"])
 
 
-@app.route('/')
+@app.route('/', strict_slashes=False)
 def get_index() -> str:
     """The home/index page.
     """
-    return render_template('4-index.html')  # Render the index template
+    return render_template('4-index.html')
 
 
 if __name__ == '__main__':
