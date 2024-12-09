@@ -21,19 +21,16 @@ babel = Babel(app)  # Initialize Babel with the Flask app
 
 @babel.localeselector
 def get_locale() -> str:
-    """Retrieves the locale for a web page.
-    """
-    # Decode and split query string
-    queries = request.query_string.decode('utf-8').split('&')
-    # Parse query parameters
-    query_table = dict(map(
-        lambda x: (x if '=' in x else '{}='.format(x)).split('='),
-        queries,
-    ))
-    if 'locale' in query_table:  # Check if 'locale' is in query parameters
-        if query_table['locale'] in app.config["LANGUAGES"]:  # Validate locale
-            return query_table['locale']  # Return the locale if valid
-    # Return the best match locale
+    """Retrieves the locale for a web page."""
+    # Check if the 'locale' parameter exists in the request args
+    locale = request.args.get('locale')
+    # Validate if the locale is supported
+    if locale in app.config["LANGUAGES"]:
+        print(f"Selected locale from query parameter: {locale}")
+        return locale  # Return the valid locale
+    # best_match = request.accept_languages.best_match(app.config["LANGUAGES"])
+    # print(f"Selected best match locale: {best_match}")
+    # Fall back to the best match based on the Accept-Language header
     return request.accept_languages.best_match(app.config["LANGUAGES"])
 
 
